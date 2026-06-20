@@ -88,6 +88,14 @@ h2.section-title::before{content:"";width:4px;height:18px;background:var(--gray-
 .finding.positive .f-label{background:var(--green-bg);color:var(--green)}
 .finding.info .f-label{background:#E3F1FA;color:var(--blue-dark)}
 .finding strong{color:var(--blue-dark)}
+.reco-list{display:grid;grid-template-columns:1fr;gap:10px;margin-top:4px}
+.reco{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.reco .reco-num{width:28px;height:28px;border-radius:50%;background:var(--blue-dark);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.reco .reco-body{flex:1;font-size:13px;line-height:1.55}
+.reco .reco-lead{display:block;font-weight:700;color:var(--blue-dark);margin-bottom:2px}
+.reco .reco-body strong{color:var(--blue-dark)}
+.creativos-toggle{cursor:pointer;user-select:none}
+.toggle-ind{font-size:12px;font-weight:600;color:var(--blue);margin-left:auto;background:#E3F1FA;padding:3px 10px;border-radius:12px}
 table.summary-table{width:100%;border-collapse:collapse;font-size:13px}
 table.summary-table th{text-align:left;padding:10px 8px;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);border-bottom:2px solid var(--border)}
 table.summary-table td{padding:10px 8px;border-bottom:1px solid var(--border)}
@@ -161,17 +169,16 @@ footer .src{margin-top:6px;opacity:.85}
   </section>
 
   <section>
-    <h2 class="section-title">Análisis y hallazgos</h2>
+    <h2 class="section-title">Recomendaciones de optimización · últimos 15 días</h2>
     <div class="analysis">
-      <h3 id="analysisTitle"></h3>
       <p id="analysisIntro" style="font-size:13px;color:var(--text-muted);margin-bottom:14px;max-width:960px"></p>
-      <div class="findings" id="findings"></div>
+      <div class="reco-list" id="recoList"></div>
     </div>
   </section>
 
   <section id="creativosSection" style="display:none">
-    <h2 class="section-title">Top creativos por inversión</h2>
-    <div class="ad-grid" id="adGrid"></div>
+    <h2 class="section-title creativos-toggle" id="creativosToggle">Top creativos por inversión<span class="toggle-ind" id="toggleInd">► ver</span></h2>
+    <div class="ad-grid" id="adGrid" style="display:none"></div>
   </section>
 
   <section>
@@ -318,24 +325,53 @@ fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()).then(data=>{
       </div></div>`;
   }).join('');
 
-  // Findings (computed, factual)
-  const prodAgg=prods.map(p=>({p,a:agg(rows.filter(r=>productOf(r.campaign)===p))}));
-  const topSpend=[...prodAgg].sort((x,y)=>y.a.spend-x.a.spend)[0];
-  const trafProds=prods.map(p=>({p,a:agg(rows.filter(r=>productOf(r.campaign)===p&&isTraffic(r)))})).filter(x=>x.a.link_clicks||x.a.clicks);
-  const bestCpc=[...trafProds].sort((x,y)=>x.a.cpc-y.a.cpc)[0];
-  document.getElementById('analysisTitle').textContent='Lectura de la entrega ('+dmm(dFrom)+' – '+dmm(dTo)+' 2026)';
-  document.getElementById('analysisIntro').innerHTML=`En el periodo, la cuenta acumula <strong>${fmt(T.impressions)} impresiones</strong> y <strong>${fmt(TR.link_clicks||TR.clicks)} link clicks</strong> con una inversión total de <strong>${cop(T.spend)}</strong> repartida entre Awareness (${copShort(AW.spend)}) y Traffic (${copShort(TR.spend)}).`;
-  const F=[];
-  F.push({t:'positive',l:'Producto con mayor inversión',h:`<strong>${topSpend.p}</strong> concentra ${copShort(topSpend.a.spend)} (${dec(topSpend.a.spend/T.spend*100,0)}% del total) con ${fmt(topSpend.a.impressions)} impresiones y CPM ${cop(topSpend.a.cpm)}.`});
-  if(bestCpc)F.push({t:'positive',l:'Mejor costo por clic',h:`El CPC más eficiente en Traffic es de <strong>${cop(bestCpc.a.cpc)}</strong> (${bestCpc.p}), con CTR ${dec(bestCpc.a.ctr,2)}%.`});
-  F.push({t:'info',l:'Alcance global',h:`Frecuencia media de <strong>${dec(AW.freq,2)}</strong> en Awareness sobre un reach acumulado de ${fmt(AW.reach)}; espacio para ampliar públicos si se busca más alcance único.`});
-  F.push({t:'info',l:'Mezcla de objetivos',h:`La inversión se divide <strong>${dec(AW.spend/T.spend*100,0)}% Awareness / ${dec(TR.spend/T.spend*100,0)}% Traffic</strong>, coherente con una estrategia de marca + conducción a sitio.`});
-  document.getElementById('findings').innerHTML=F.map(f=>`<div class="finding ${f.t}"><span class="f-label">${f.l}</span><div>${f.h}</div></div>`).join('');
+  // Recomendaciones de optimización · últimos 15 días (tono neutro, sin adjetivos)
+  const win0=addDays(dTo,-14);
+  const r15=rows.filter(r=>r.date>=win0);
+  const T15=agg(r15), A15=agg(r15.filter(r=>!isTraffic(r))), R15=agg(r15.filter(isTraffic));
+  const avgCpc=R15.cpc, avgCpm=A15.cpm, avgCtr=R15.ctr, avgFreq=A15.freq;
+  document.getElementById('analysisIntro').innerHTML=`Ventana: <strong>${dmm(win0)} – ${dmm(dTo)} 2026</strong>. Inversión ${cop(T15.spend)}, ${fmt(T15.impressions)} impresiones y ${fmt(R15.link_clicks||R15.clicks)} link clicks. Recomendaciones ordenadas por inversión asociada en la ventana.`;
+
+  const camp15={};r15.forEach(r=>{(camp15[r.campaign]??=[]).push(r);});
+  const recos=[];
+  Object.entries(camp15).forEach(([name,rs])=>{
+    const a=agg(rs), t=isTraffic(rs[0]), s=name.trim(), clk=a.link_clicks||a.clicks;
+    if(t){
+      if(clk>0&&avgCpc>0&&a.cpc>avgCpc*1.2)
+        recos.push({impact:a.spend,lead:'Revisar segmentación y creativos',body:`Campaña <strong>${s}</strong>: CPC link de ${cop(a.cpc)} frente al promedio Traffic de ${cop(avgCpc)} en la ventana.`});
+      if(a.impressions>0&&avgCtr>0&&a.ctr<avgCtr*0.8)
+        recos.push({impact:a.spend,lead:'Actualizar variantes de creativo',body:`Campaña <strong>${s}</strong>: CTR de ${dec(a.ctr,2)}% frente al promedio Traffic de ${dec(avgCtr,2)}%.`});
+      if(clk>0&&avgCpc>0&&a.cpc<avgCpc*0.8)
+        recos.push({impact:a.spend,lead:'Evaluar incremento de presupuesto',body:`Campaña <strong>${s}</strong>: CPC link de ${cop(a.cpc)}, por debajo del promedio Traffic de ${cop(avgCpc)}.`});
+    } else {
+      if(a.freq>Math.max(2,avgFreq*1.2))
+        recos.push({impact:a.spend,lead:'Ampliar el público',body:`Campaña <strong>${s}</strong>: frecuencia de ${dec(a.freq,2)} sobre reach ${fmt(a.reach)} en la ventana.`});
+      if(a.impressions>0&&avgCpm>0&&a.cpm>avgCpm*1.2)
+        recos.push({impact:a.spend,lead:'Revisar ubicaciones y públicos',body:`Campaña <strong>${s}</strong>: CPM de ${cop(a.cpm)} frente al promedio Awareness de ${cop(avgCpm)}.`});
+    }
+  });
+  const prodSp={};r15.forEach(r=>{prodSp[productOf(r.campaign)]=(prodSp[productOf(r.campaign)]||0)+r.spend;});
+  const topP=Object.entries(prodSp).sort((a,b)=>b[1]-a[1])[0];
+  if(topP&&T15.spend>0&&topP[1]/T15.spend>0.5)
+    recos.push({impact:topP[1],lead:'Revisar distribución de inversión',body:`El ${dec(topP[1]/T15.spend*100,0)}% de la inversión de la ventana corresponde a <strong>${topP[0]}</strong>. Revisar la distribución entre productos según los objetivos.`});
+
+  recos.sort((x,y)=>y.impact-x.impact);
+  const topR=recos.slice(0,6);
+  document.getElementById('recoList').innerHTML = topR.length
+    ? topR.map((r,i)=>`<div class="reco"><div class="reco-num">${i+1}</div><div class="reco-body"><span class="reco-lead">${r.lead}</span>${r.body}</div></div>`).join('')
+    : '<div class="reco"><div class="reco-num">–</div><div class="reco-body">Sin desviaciones frente a los promedios de la cuenta en la ventana de 15 días.</div></div>';
 
   // Top creativos (thumbnails)
   if (Array.isArray(data.ads) && data.ads.length){
     document.getElementById('creativosSection').style.display='';
-    document.getElementById('adGrid').innerHTML=data.ads.map(a=>{
+    const ind=document.getElementById('toggleInd'), grid=document.getElementById('adGrid');
+    ind.textContent='► ver '+data.ads.length+' creativos';
+    document.getElementById('creativosToggle').addEventListener('click',()=>{
+      const open=grid.style.display!=='none';
+      grid.style.display=open?'none':'grid';
+      ind.textContent=(open?'► ver ':'▼ ocultar ')+data.ads.length+' creativos';
+    });
+    grid.innerHTML=data.ads.map(a=>{
       const ctr=a.impressions?a.clicks/a.impressions*100:0;
       const name=(a.ad_name||'').trim()||'(sin nombre)';
       return `<div class="ad-card">
