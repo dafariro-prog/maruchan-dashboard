@@ -1,4 +1,4 @@
-name: Refresco diario del dashboard Maruchan
+name: Refresco diario del dashboard Axon Pharma
 
 on:
   schedule:
@@ -14,12 +14,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Jalar data real de Meta (Windsor.ai)
         env:
@@ -28,7 +28,7 @@ jobs:
 
       - name: Commit si hubo cambios
         run: |
-          git config user.name  "maruchan-bot"
+          git config user.name  "axonpharma-bot"
           git config user.email "actions@github.com"
           git add data/dashboard.json
           if git diff --staged --quiet; then
