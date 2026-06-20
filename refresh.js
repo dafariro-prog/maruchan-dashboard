@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 
 const API_KEY    = process.env.WINDSOR_API_KEY;
-const ACCOUNT_ID = '1192531552979145';            // MARUCHAN_Porter_BMCR
+const ACCOUNT_ID = '1211531357024604';            // Axon Pharma Colombia
 const CONNECTOR  = 'facebook';
 const DATE_PRESET= 'last_90d';                     // ventana que cubre los flights vigentes
 const FIELDS     = ['account_id','campaign','objective','date','spend','impressions',
@@ -46,8 +46,8 @@ const url = `https://connectors.windsor.ai/${CONNECTOR}?` + new URLSearchParams(
 
   const out = {
     updated: new Date().toISOString(),
-    account: { id: ACCOUNT_ID, name: 'MARUCHAN_Porter_BMCR', connector: CONNECTOR },
-    filter: 'MARUCHAN',
+    account: { id: ACCOUNT_ID, name: 'Axon Pharma Colombia', connector: CONNECTOR, currency: 'COP' },
+    filter: 'AxonPharma',
     rows,
   };
 

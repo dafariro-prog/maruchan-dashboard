@@ -1,197 +1,335 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard Maruchan · Meta Awareness</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Informe de Campaña · Axon Pharma Colombia</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
 <style>
-  :root{
-    --navy:#003D91; --red:#DA291C; --ink:#1a2230; --muted:#6b7480;
-    --line:#e6e9ef; --bg:#f4f6fa; --card:#ffffff; --good:#1a7f4b; --warn:#b07400;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);}
-  .wrap{max-width:1180px;margin:0 auto;padding:24px 20px 60px;}
-  header.top{background:var(--navy);color:#fff;border-radius:14px;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;box-shadow:0 6px 20px rgba(0,61,145,.18);}
-  header.top h1{margin:0;font-size:22px;letter-spacing:.3px}
-  header.top .sub{opacity:.85;font-size:13px;margin-top:4px}
-  .badge{background:var(--red);color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.5px}
-  .updated{font-size:12px;opacity:.8;text-align:right}
-  .grid{display:grid;gap:16px;margin-top:20px}
-  .kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:0 1px 3px rgba(20,30,50,.04)}
-  .kpi .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
-  .kpi .value{font-size:26px;font-weight:800;color:var(--navy);margin-top:6px;line-height:1.1}
-  .kpi .foot{font-size:12px;color:var(--muted);margin-top:4px}
-  h2{font-size:16px;color:var(--navy);margin:30px 0 12px;border-left:4px solid var(--red);padding-left:10px}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line)}
-  th{background:#f0f3f9;color:var(--navy);font-size:11px;text-transform:uppercase;letter-spacing:.5px}
-  td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
-  tr:last-child td{border-bottom:none}
-  .pill{display:inline-block;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:700}
-  .pill.active{background:#e3f3ea;color:var(--good)}
-  .pill.ended{background:#eef1f5;color:var(--muted)}
-  .chart-card{height:340px}
-  .two{grid-template-columns:1fr 1fr}
-  @media(max-width:760px){.two{grid-template-columns:1fr}}
-  footer{margin-top:34px;font-size:12px;color:var(--muted);text-align:center;line-height:1.7}
-  .note{font-size:12px;color:var(--muted);margin-top:8px}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header class="top">
-    <div>
-      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-        <h1>Dashboard Maruchan</h1><span class="badge">META · AWARENESS</span>
-      </div>
-      <div class="sub" id="subhead">Cargando…</div>
+:root{
+  --blue:#0095D5;--blue-dark:#00638C;--blue-light:#43B4E4;--blue-deep:#004A6B;
+  --gray:#86888B;--gray-dark:#56606A;--accent:#0095D5;
+  --bg:#F3F6FA;--card:#FFFFFF;--text:#1A2230;--text-muted:#5A6271;--border:#E2E7EF;
+  --green:#1F8A4C;--green-bg:#E6F4EC;--amber:#C77A00;--amber-bg:#FFF3DC;
+  --shadow:0 1px 3px rgba(0,74,107,.06),0 4px 12px rgba(0,74,107,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;color-scheme:light}
+.container{max-width:1280px;margin:0 auto;padding:0 24px 48px}
+.topbar{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-dark) 100%);color:#fff;padding:28px 24px 24px;border-bottom:4px solid var(--gray-dark)}
+.topbar-inner{max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:16px}
+.brand-mark{background:#fff;border-radius:10px;padding:12px 18px;box-shadow:0 4px 12px rgba(0,0,0,.18);display:flex;align-items:center}
+.brand-mark svg{display:block;height:44px;width:auto}
+.brand h1{font-size:22px;font-weight:700;letter-spacing:-.2px;margin-bottom:4px}
+.brand .sub{font-size:13px;opacity:.9;font-weight:400}
+.header-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:13px}
+.header-meta .pill{background:rgba(255,255,255,.1);padding:8px 14px;border-radius:20px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.18)}
+.header-meta .pill strong{display:block;color:#CDEBFA;font-size:11px;letter-spacing:.5px;text-transform:uppercase;font-weight:600}
+.header-meta .pill span{font-weight:600}
+.flight-progress{background:var(--card);margin-top:-12px;border-radius:12px;padding:18px 22px;box-shadow:var(--shadow);position:relative;z-index:2;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.flight-progress .label{font-size:13px;color:var(--text-muted);font-weight:500}
+.flight-progress .label b{color:var(--text);font-weight:700}
+.flight-progress .bar{flex:1;min-width:200px;height:10px;background:#E7EEF6;border-radius:6px;overflow:hidden;position:relative}
+.flight-progress .bar-fill{height:100%;background:linear-gradient(90deg,var(--blue-dark),var(--blue));border-radius:6px}
+section{margin-top:32px}
+h2.section-title{font-size:18px;font-weight:700;color:var(--blue-dark);display:flex;align-items:center;gap:10px;margin-bottom:14px}
+h2.section-title::before{content:"";width:4px;height:18px;background:var(--gray-dark);border-radius:2px}
+.okr-section{background:linear-gradient(135deg,var(--blue) 0%,var(--blue-deep) 100%);border-radius:14px;padding:26px;box-shadow:0 4px 16px rgba(0,74,107,.18);color:#fff;margin-top:24px;position:relative;overflow:hidden}
+.okr-section::before{content:"";position:absolute;top:0;right:0;width:140px;height:140px;background:radial-gradient(circle,rgba(255,255,255,.18) 0%,transparent 70%);border-radius:50%;pointer-events:none}
+.okr-header{display:flex;align-items:center;gap:12px;margin-bottom:6px;position:relative;z-index:1}
+.okr-badge{background:var(--gray-dark);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:.6px;text-transform:uppercase}
+.okr-section h2{font-size:18px;font-weight:700}
+.okr-section .okr-sub{font-size:12.5px;opacity:.88;margin:6px 0 18px;max-width:820px;position:relative;z-index:1}
+.okr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;position:relative;z-index:1}
+@media (max-width:760px){.okr-grid{grid-template-columns:1fr}}
+.okr-card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:16px 18px}
+.okr-card.highlight{background:#fff;color:var(--blue-dark);border-color:#fff}
+.okr-card .okr-label{font-size:10.5px;letter-spacing:.7px;text-transform:uppercase;font-weight:600;opacity:.88;margin-bottom:6px}
+.okr-card.highlight .okr-label{color:var(--blue);opacity:1}
+.okr-card .okr-value{font-size:29px;font-weight:700;letter-spacing:-.6px;line-height:1}
+.okr-card .okr-foot{font-size:11.5px;opacity:.88;margin-top:6px}
+.okr-card.highlight .okr-foot{color:var(--text-muted);opacity:1}
+.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media (max-width:900px){.kpi-grid{grid-template-columns:1fr}}
+.kpi-card{background:var(--card);border-radius:12px;padding:20px;box-shadow:var(--shadow);border-top:3px solid var(--blue);position:relative;overflow:hidden}
+.kpi-card.traffic{border-top-color:var(--gray-dark)}
+.kpi-card h3{font-size:13px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:6px}
+.kpi-card .kpi-headline{font-size:28px;font-weight:700;color:var(--text);letter-spacing:-.5px}
+.kpi-card .kpi-sub{font-size:12px;color:var(--text-muted);margin-top:4px}
+.kpi-card .kpi-row{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:13px}
+.kpi-row .kpi-row-label{color:var(--text-muted)}
+.kpi-row .kpi-row-val{font-weight:600}
+.status{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;letter-spacing:.3px;text-transform:uppercase}
+.status.active{background:var(--green-bg);color:var(--green)}
+.status.ended{background:#EEF1F5;color:var(--text-muted)}
+.status .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:16px}
+.obj-card{background:var(--card);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+.obj-card h3{font-size:16px;color:var(--blue-dark);font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.obj-card .obj-meta{font-size:12px;color:var(--text-muted);margin:4px 0 16px}
+.platforms{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.platforms{grid-template-columns:1fr}}
+.platform{border:1px solid var(--border);border-radius:10px;padding:14px;background:linear-gradient(180deg,#FAFCFE,#FFF)}
+.platform.aw{border-left:3px solid var(--blue)}
+.platform.tr{border-left:3px solid var(--gray-dark)}
+.platform-name{font-weight:700;font-size:13px;color:var(--text);margin-bottom:10px}
+.platform-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12px}
+.stat .stat-label{color:var(--text-muted);font-size:10.5px;text-transform:uppercase;letter-spacing:.4px;font-weight:600;display:block;margin-bottom:2px}
+.stat .stat-val{font-weight:700;font-size:14px;color:var(--text)}
+.chart-card{background:var(--card);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+.chart-card h3{font-size:15px;color:var(--blue-dark);font-weight:700;margin-bottom:4px}
+.chart-card .chart-sub{font-size:12px;color:var(--text-muted);margin-bottom:14px}
+.chart-wrap{height:330px;position:relative}
+.analysis{background:linear-gradient(135deg,#FFFFFF 0%,#F5FAFD 100%);border-radius:14px;padding:24px;box-shadow:var(--shadow);border-left:4px solid var(--blue)}
+.analysis h3{color:var(--blue-dark);font-size:16px;font-weight:700;margin-bottom:14px}
+.findings{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.finding{background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;font-size:13px;line-height:1.55}
+.finding .f-label{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 8px;border-radius:6px;display:inline-block;margin-bottom:8px}
+.finding.positive .f-label{background:var(--green-bg);color:var(--green)}
+.finding.info .f-label{background:#E3F1FA;color:var(--blue-dark)}
+.finding strong{color:var(--blue-dark)}
+table.summary-table{width:100%;border-collapse:collapse;font-size:13px}
+table.summary-table th{text-align:left;padding:10px 8px;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);border-bottom:2px solid var(--border)}
+table.summary-table td{padding:10px 8px;border-bottom:1px solid var(--border)}
+table.summary-table tr:last-child td{border-bottom:none}
+.num{text-align:right;font-variant-numeric:tabular-nums}
+footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:11px;text-align:center}
+footer .src{margin-top:6px;opacity:.85}
+</style></head><body>
+<div class="topbar"><div class="topbar-inner">
+  <div class="brand">
+    <div class="brand-mark" aria-label="Axon Pharma">
+      <svg viewBox="0 0 372 80" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo Axon Pharma">
+        <path d="M34,8 C34,8 12,40 12,54 a22,22 0 0 0 44,0 C56,40 34,8 34,8 Z" fill="#0095D5"/>
+        <path d="M6,38 C20,26 42,26 60,42 C42,36 24,40 12,54 Z" fill="#9A9DA1"/>
+        <text x="78" y="52" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="38" letter-spacing="0">
+          <tspan fill="#86888B">AXON</tspan><tspan fill="#0095D5"> PHARMA</tspan></text>
+      </svg>
     </div>
-    <div class="updated" id="updated"></div>
-  </header>
+    <div><h1>Informe de Campaña · Axon Pharma</h1>
+    <div class="sub" id="subhead">Colombia · Meta (Facebook / Instagram)</div></div>
+  </div>
+  <div class="header-meta" id="headerMeta"></div>
+</div></div>
+<div class="container">
+  <div class="flight-progress" id="flight"></div>
 
-  <div class="grid kpis" id="kpis"></div>
-
-  <h2>Tendencia diaria (campaña activa)</h2>
-  <div class="card chart-card"><canvas id="trend"></canvas></div>
-
-  <h2>Resumen por campaña</h2>
-  <div class="card" style="padding:0;overflow-x:auto">
-    <table id="campTable">
-      <thead><tr>
-        <th>Campaña</th><th>Objetivo</th><th>Estado</th><th>Periodo</th>
-        <th class="num">Spend</th><th class="num">Impresiones</th><th class="num">Reach</th>
-        <th class="num">Frecuencia</th><th class="num">Clicks</th><th class="num">CPM</th><th class="num">CTR</th>
-      </tr></thead>
-      <tbody></tbody>
-    </table>
+  <div class="okr-section">
+    <div class="okr-header"><span class="okr-badge">Métrica clave</span><h2>Alcance de marca · Axon Pharma Colombia</h2></div>
+    <div class="okr-sub">Entrega real en Meta (Facebook/Instagram) de los productos A-Cerumen, Marimer y Floratil. Datos vía Windsor.ai · moneda COP.</div>
+    <div class="okr-grid" id="okrGrid"></div>
   </div>
 
-  <h2>Detalle diario — campaña activa</h2>
-  <div class="card" style="padding:0;overflow-x:auto">
-    <table id="dailyTable">
+  <section>
+    <h2 class="section-title">Resumen por objetivo</h2>
+    <div class="kpi-grid" id="kpiGrid"></div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Evolución diaria de inversión</h2>
+    <div class="chart-card"><h3>Spend diario por objetivo</h3>
+      <div class="chart-sub">Línea azul: Awareness · línea gris: Traffic · valores en COP</div>
+      <div class="chart-wrap"><canvas id="spendChart"></canvas></div></div>
+  </section>
+
+  <section>
+    <h2 class="section-title">KPIs diarios</h2>
+    <div class="chart-card"><h3>Impresiones (Awareness) y Link clicks (Traffic)</h3>
+      <div class="chart-sub">Barras: impresiones · línea: link clicks</div>
+      <div class="chart-wrap"><canvas id="kpiChart"></canvas></div></div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Desempeño por producto</h2>
+    <div class="prod-grid" id="prodGrid"></div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Análisis y hallazgos</h2>
+    <div class="analysis">
+      <h3 id="analysisTitle"></h3>
+      <p id="analysisIntro" style="font-size:13px;color:var(--text-muted);margin-bottom:14px;max-width:960px"></p>
+      <div class="findings" id="findings"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Tabla resumen consolidada</h2>
+    <div class="chart-card" style="overflow-x:auto"><table class="summary-table" id="summaryTable">
       <thead><tr>
-        <th>Fecha</th><th class="num">Spend</th><th class="num">Impresiones</th>
-        <th class="num">Reach</th><th class="num">Frecuencia</th><th class="num">Clicks</th>
-        <th class="num">CPM</th><th class="num">CPC</th><th class="num">CTR</th>
-      </tr></thead>
-      <tbody></tbody>
-    </table>
-  </div>
+        <th>Campaña</th><th>Producto</th><th>Objetivo</th><th>Estado</th><th>Periodo</th>
+        <th class="num">Spend (COP)</th><th class="num">Impresiones</th><th class="num">Reach</th>
+        <th class="num">Clicks</th><th class="num">CPM</th><th class="num">CTR</th>
+      </tr></thead><tbody></tbody>
+    </table></div>
+  </section>
 
   <footer>
-    <div>Fuente: <b>Meta Ads</b> vía Windsor.ai · Cuenta <span id="acct"></span></div>
-    <div>Actualización automática diaria · Solo data real de Meta · Colores institucionales navy/rojo</div>
+    <div><strong>Informe Axon Pharma Colombia</strong> · <span id="footUpd"></span></div>
+    <div class="src">Fuente: Meta Ads (Facebook/Instagram) vía Windsor.ai · Cuenta <span id="footAcct"></span> · Actualización automática diaria · Solo data real · Moneda COP</div>
   </footer>
 </div>
 
 <script>
-const fmt   = n => new Intl.NumberFormat('es-CR').format(Math.round(n));
-const money = n => '$'+new Intl.NumberFormat('es-CR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
-const dec   = (n,d=2)=> new Intl.NumberFormat('es-CR',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n);
-const dmm   = d => new Date(d+'T00:00:00').toLocaleDateString('es-CR',{day:'2-digit',month:'short'});
-
-const OBJ = {
-  OUTCOME_AWARENESS:'Alcance', OUTCOME_ENGAGEMENT:'Interacción', OUTCOME_TRAFFIC:'Tráfico',
-  OUTCOME_LEADS:'Leads', OUTCOME_SALES:'Ventas', OUTCOME_APP_PROMOTION:'App',
-  VIDEO_VIEWS:'Reproducciones', REACH:'Alcance', BRAND_AWARENESS:'Awareness'
-};
-const objLabel = o => OBJ[o] || (o||'—');
+const NF=new Intl.NumberFormat('es-CO');
+const fmt=n=>NF.format(Math.round(n||0));
+const dec=(n,d=2)=>new Intl.NumberFormat('es-CO',{minimumFractionDigits:d,maximumFractionDigits:d}).format(n||0);
+const cop=n=>'$'+fmt(n)+' COP';
+const copShort=n=>{n=n||0;const a=Math.abs(n);
+  if(a>=1e9)return '$'+dec(n/1e9,1)+' MM';
+  if(a>=1e6)return '$'+dec(n/1e6,1)+' M';
+  if(a>=1e3)return '$'+dec(n/1e3,0)+' K';
+  return '$'+fmt(n);};
+const dmm=d=>new Date(d+'T00:00:00').toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+const PRODUCTS=['A-CERUMEN','MARIMER&FLORATIL','MARIMER','FLORATIL'];
+const productOf=c=>{const u=c.toUpperCase();for(const p of PRODUCTS)if(u.includes(p))return p==='MARIMER&FLORATIL'?'MARIMER & FLORATIL':p;return 'Otros';};
+const isTraffic=r=>r.objective==='LINK_CLICKS'||/traffic/i.test(r.campaign);
+const objName=r=>isTraffic(r)?'Traffic':'Awareness';
 
 function agg(rows){
   const s={spend:0,impressions:0,reach:0,clicks:0,link_clicks:0};
   rows.forEach(r=>{s.spend+=r.spend;s.impressions+=r.impressions;s.reach+=r.reach;s.clicks+=r.clicks;s.link_clicks+=(r.link_clicks||0);});
-  s.cpm = s.impressions? s.spend/s.impressions*1000 : 0;
-  s.cpc = s.clicks? s.spend/s.clicks : 0;
-  s.ctr = s.impressions? s.clicks/s.impressions*100 : 0;
-  s.freq= s.reach? s.impressions/s.reach : 0;
-  s.days= new Set(rows.map(r=>r.date)).size;
+  s.cpm=s.impressions?s.spend/s.impressions*1000:0;
+  s.cpc=s.link_clicks?s.spend/s.link_clicks:(s.clicks?s.spend/s.clicks:0);
+  s.ctr=s.impressions?s.clicks/s.impressions*100:0;
+  s.freq=s.reach?s.impressions/s.reach:0;
   return s;
 }
 
 fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()).then(data=>{
-  const rows = data.rows;
-  document.getElementById('acct').textContent = data.account.name+' ('+data.account.id+')';
-  const upd = new Date(data.updated);
-  document.getElementById('updated').innerHTML =
-    'Actualizado<br><b>'+upd.toLocaleDateString('es-CR',{day:'2-digit',month:'long',year:'numeric'})+'</b>';
+  const rows=data.rows;
+  const dates=rows.map(r=>r.date).sort();
+  const dFrom=dates[0],dTo=dates[dates.length-1];
+  const upd=new Date(data.updated);
+  const updTxt=upd.toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
 
-  // campaigns grouped
-  const byCamp = {};
-  rows.forEach(r=>{(byCamp[r.campaign] ||= []).push(r);});
-  const camps = Object.entries(byCamp).map(([name,rs])=>{
-    const dates = rs.map(r=>r.date).sort();
-    return {name, rows:rs, start:dates[0], end:dates[dates.length-1], a:agg(rs)};
-  }).sort((x,y)=> x.start<y.start?1:-1);
+  document.getElementById('footAcct').textContent=data.account.name+' ('+data.account.id+')';
+  document.getElementById('footUpd').textContent='Actualizado '+updTxt;
+  document.getElementById('subhead').textContent='Colombia · Meta (Facebook / Instagram) · '+dmm(dFrom)+' – '+dmm(dTo)+' 2026';
 
-  const active = camps[0]; // most recent
-  const t = agg(rows);
-  document.getElementById('subhead').textContent =
-    camps.length+' campañas · '+t.days+' días con entrega · campaña activa: '+active.name;
+  const T=agg(rows);
+  document.getElementById('headerMeta').innerHTML=`
+    <div class="pill"><strong>Periodo</strong><span>${dmm(dFrom)} – ${dmm(dTo)} 2026</span></div>
+    <div class="pill"><strong>Inversión total</strong><span>${copShort(T.spend)}</span></div>
+    <div class="pill"><strong>Actualizado</strong><span>${updTxt}</span></div>`;
 
-  // KPIs (overall real delivery)
-  const kpis = [
-    {label:'Inversión total', value:money(t.spend), foot:t.days+' días con datos'},
-    {label:'Impresiones', value:fmt(t.impressions), foot:'CPM '+money(t.cpm)},
-    {label:'Reach total*', value:fmt(t.reach), foot:'*suma diaria, no único'},
-    {label:'Frecuencia media', value:dec(t.freq,2), foot:'impresiones / reach'},
-    {label:'Clicks', value:fmt(t.clicks), foot:'CPC '+money(t.cpc)},
-    {label:'CTR', value:dec(t.ctr,2)+'%', foot:'clicks / impresiones'},
-  ];
-  document.getElementById('kpis').innerHTML = kpis.map(k=>
-    `<div class="card kpi"><div class="label">${k.label}</div><div class="value">${k.value}</div><div class="foot">${k.foot}</div></div>`
-  ).join('');
+  // Flight: active = current month flight (Jun26)
+  const activeRows=rows.filter(r=>/^jun26/i.test(r.campaign));
+  const aDates=activeRows.map(r=>r.date).sort();
+  document.getElementById('flight').innerHTML=`
+    <div class="label"><b>Flight activo</b> · ${activeRows.length? dmm(aDates[0])+' – '+dmm(aDates[aDates.length-1]):'—'} (Junio 2026)</div>
+    <div class="bar"><div class="bar-fill" style="width:${Math.min(100,Math.round(new Date(dTo+'T00:00:00').getDate()/30*100))}%"></div></div>
+    <div class="label" style="font-size:12px">${(new Set(activeRows.map(r=>r.campaign))).size} campañas activas este mes</div>`;
 
-  // campaign table
-  const todayStr = data.updated.slice(0,10);
-  document.querySelector('#campTable tbody').innerHTML = camps.map(c=>{
-    const recent = c.end >= addDays(todayStr,-3);
-    return `<tr>
-      <td>${c.name.trim()}</td>
-      <td>${objLabel(c.rows[0].objective)}</td>
-      <td><span class="pill ${recent?'active':'ended'}">${recent?'Activa':'Finalizada'}</span></td>
-      <td>${dmm(c.start)} – ${dmm(c.end)}</td>
-      <td class="num">${money(c.a.spend)}</td>
-      <td class="num">${fmt(c.a.impressions)}</td>
-      <td class="num">${fmt(c.a.reach)}</td>
-      <td class="num">${dec(c.a.freq,2)}</td>
-      <td class="num">${fmt(c.a.clicks)}</td>
-      <td class="num">${money(c.a.cpm)}</td>
-      <td class="num">${dec(c.a.ctr,2)}%</td>
-    </tr>`;
+  // OKR hero
+  document.getElementById('okrGrid').innerHTML=`
+    <div class="okr-card highlight"><div class="okr-label">Impresiones totales</div><div class="okr-value">${copShort(T.impressions).replace('$','')}</div><div class="okr-foot">Entrega acumulada en Meta</div></div>
+    <div class="okr-card"><div class="okr-label">Reach (suma diaria)</div><div class="okr-value">${copShort(T.reach).replace('$','')}</div><div class="okr-foot">Frecuencia media ${dec(T.freq,2)}</div></div>
+    <div class="okr-card"><div class="okr-label">Inversión total</div><div class="okr-value">${copShort(T.spend)}</div><div class="okr-foot">CPM promedio ${cop(T.cpm)}</div></div>`;
+
+  // KPI by objective
+  const AW=agg(rows.filter(r=>!isTraffic(r))), TR=agg(rows.filter(isTraffic));
+  document.getElementById('kpiGrid').innerHTML=`
+    <div class="kpi-card">
+      <h3>Awareness · Alcance</h3>
+      <div class="kpi-headline">${fmt(AW.impressions)}</div>
+      <div class="kpi-sub">impresiones · reach ${fmt(AW.reach)} · frecuencia ${dec(AW.freq,2)}</div>
+      <div class="kpi-row"><span class="kpi-row-label">Inversión</span><span class="kpi-row-val">${cop(AW.spend)}</span></div>
+      <div class="kpi-row"><span class="kpi-row-label">CPM</span><span class="kpi-row-val">${cop(AW.cpm)}</span></div>
+    </div>
+    <div class="kpi-card traffic">
+      <h3>Traffic · Link clicks</h3>
+      <div class="kpi-headline">${fmt(TR.link_clicks||TR.clicks)}</div>
+      <div class="kpi-sub">link clicks · CTR ${dec(TR.ctr,2)}% · impresiones ${fmt(TR.impressions)}</div>
+      <div class="kpi-row"><span class="kpi-row-label">Inversión</span><span class="kpi-row-val">${cop(TR.spend)}</span></div>
+      <div class="kpi-row"><span class="kpi-row-label">CPC (link)</span><span class="kpi-row-val">${cop(TR.cpc)}</span></div>
+    </div>`;
+
+  // Daily series
+  const days=[...new Set(rows.map(r=>r.date))].sort();
+  const spA=days.map(d=>rows.filter(r=>r.date===d&&!isTraffic(r)).reduce((a,r)=>a+r.spend,0));
+  const spT=days.map(d=>rows.filter(r=>r.date===d&&isTraffic(r)).reduce((a,r)=>a+r.spend,0));
+  const impA=days.map(d=>rows.filter(r=>r.date===d&&!isTraffic(r)).reduce((a,r)=>a+r.impressions,0));
+  const clkT=days.map(d=>rows.filter(r=>r.date===d&&isTraffic(r)).reduce((a,r)=>a+(r.link_clicks||r.clicks),0));
+  const LBL=days.map(dmm);
+  const BLUE='#0095D5',GRAY='#56606A',BLUEL='#43B4E4';
+  Chart.defaults.font.family="-apple-system,'Segoe UI',Roboto,sans-serif";Chart.defaults.color='#5A6271';Chart.defaults.font.size=12;
+
+  new Chart(spendChart,{type:'line',data:{labels:LBL,datasets:[
+    {label:'Awareness',data:spA,borderColor:BLUE,backgroundColor:BLUE+'22',fill:true,tension:.35,borderWidth:2.5,pointRadius:0},
+    {label:'Traffic',data:spT,borderColor:GRAY,backgroundColor:GRAY+'1A',fill:true,tension:.35,borderWidth:2.5,pointRadius:0}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',padding:12}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': '+cop(c.parsed.y)}}},
+    scales:{x:{grid:{display:false}},y:{beginAtZero:true,grid:{color:'#EBF0F7'},ticks:{callback:v=>copShort(v)}}}}});
+
+  new Chart(kpiChart,{data:{labels:LBL,datasets:[
+    {type:'bar',label:'Impresiones (Awareness)',data:impA,backgroundColor:BLUE,borderRadius:3,yAxisID:'y'},
+    {type:'line',label:'Link clicks (Traffic)',data:clkT,borderColor:GRAY,backgroundColor:GRAY+'22',tension:.35,borderWidth:2.5,pointRadius:0,yAxisID:'y1'}
+  ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+    plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',padding:12}},
+      tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)}}},
+    scales:{x:{grid:{display:false}},
+      y:{beginAtZero:true,position:'left',grid:{color:'#EBF0F7'},ticks:{callback:v=>(v/1e6).toFixed(1)+'M'},title:{display:true,text:'Impresiones'}},
+      y1:{beginAtZero:true,position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>fmt(v)},title:{display:true,text:'Link clicks'}}}}});
+
+  // By product
+  const prods=[...new Set(rows.map(r=>productOf(r.campaign)))];
+  document.getElementById('prodGrid').innerHTML=prods.map(p=>{
+    const pr=rows.filter(r=>productOf(r.campaign)===p);
+    const aw=agg(pr.filter(r=>!isTraffic(r))), tr=agg(pr.filter(isTraffic));
+    return `<div class="obj-card">
+      <h3>${p}<span class="status active"><span class="dot"></span>${copShort(aw.spend+tr.spend)}</span></h3>
+      <div class="obj-meta">Inversión total ${cop(aw.spend+tr.spend)} · ${(new Set(pr.map(r=>r.campaign))).size} campañas</div>
+      <div class="platforms">
+        <div class="platform aw"><div class="platform-name">Awareness</div><div class="platform-stats">
+          <div class="stat"><span class="stat-label">Impresiones</span><span class="stat-val">${fmt(aw.impressions)}</span></div>
+          <div class="stat"><span class="stat-label">Reach</span><span class="stat-val">${fmt(aw.reach)}</span></div>
+          <div class="stat"><span class="stat-label">CPM</span><span class="stat-val">${cop(aw.cpm)}</span></div>
+          <div class="stat"><span class="stat-label">Spend</span><span class="stat-val">${copShort(aw.spend)}</span></div>
+        </div></div>
+        <div class="platform tr"><div class="platform-name">Traffic</div><div class="platform-stats">
+          <div class="stat"><span class="stat-label">Link clicks</span><span class="stat-val">${fmt(tr.link_clicks||tr.clicks)}</span></div>
+          <div class="stat"><span class="stat-label">CTR</span><span class="stat-val">${dec(tr.ctr,2)}%</span></div>
+          <div class="stat"><span class="stat-label">CPC</span><span class="stat-val">${cop(tr.cpc)}</span></div>
+          <div class="stat"><span class="stat-label">Spend</span><span class="stat-val">${copShort(tr.spend)}</span></div>
+        </div></div>
+      </div></div>`;
   }).join('');
 
-  // daily table (active campaign)
-  const daily = [...active.rows].sort((a,b)=> a.date<b.date?1:-1);
-  document.querySelector('#dailyTable tbody').innerHTML = daily.map(r=>`
-    <tr><td>${dmm(r.date)}</td>
-      <td class="num">${money(r.spend)}</td><td class="num">${fmt(r.impressions)}</td>
-      <td class="num">${fmt(r.reach)}</td><td class="num">${dec(r.frequency,2)}</td>
-      <td class="num">${fmt(r.clicks)}</td><td class="num">${money(r.cpm)}</td>
-      <td class="num">${money(r.cpc)}</td><td class="num">${dec(r.ctr*100,2)}%</td></tr>`).join('');
+  // Findings (computed, factual)
+  const prodAgg=prods.map(p=>({p,a:agg(rows.filter(r=>productOf(r.campaign)===p))}));
+  const topSpend=[...prodAgg].sort((x,y)=>y.a.spend-x.a.spend)[0];
+  const trafProds=prods.map(p=>({p,a:agg(rows.filter(r=>productOf(r.campaign)===p&&isTraffic(r)))})).filter(x=>x.a.link_clicks||x.a.clicks);
+  const bestCpc=[...trafProds].sort((x,y)=>x.a.cpc-y.a.cpc)[0];
+  document.getElementById('analysisTitle').textContent='Lectura de la entrega ('+dmm(dFrom)+' – '+dmm(dTo)+' 2026)';
+  document.getElementById('analysisIntro').innerHTML=`En el periodo, la cuenta acumula <strong>${fmt(T.impressions)} impresiones</strong> y <strong>${fmt(TR.link_clicks||TR.clicks)} link clicks</strong> con una inversión total de <strong>${cop(T.spend)}</strong> repartida entre Awareness (${copShort(AW.spend)}) y Traffic (${copShort(TR.spend)}).`;
+  const F=[];
+  F.push({t:'positive',l:'Producto con mayor inversión',h:`<strong>${topSpend.p}</strong> concentra ${copShort(topSpend.a.spend)} (${dec(topSpend.a.spend/T.spend*100,0)}% del total) con ${fmt(topSpend.a.impressions)} impresiones y CPM ${cop(topSpend.a.cpm)}.`});
+  if(bestCpc)F.push({t:'positive',l:'Mejor costo por clic',h:`El CPC más eficiente en Traffic es de <strong>${cop(bestCpc.a.cpc)}</strong> (${bestCpc.p}), con CTR ${dec(bestCpc.a.ctr,2)}%.`});
+  F.push({t:'info',l:'Alcance global',h:`Frecuencia media de <strong>${dec(AW.freq,2)}</strong> en Awareness sobre un reach acumulado de ${fmt(AW.reach)}; espacio para ampliar públicos si se busca más alcance único.`});
+  F.push({t:'info',l:'Mezcla de objetivos',h:`La inversión se divide <strong>${dec(AW.spend/T.spend*100,0)}% Awareness / ${dec(TR.spend/T.spend*100,0)}% Traffic</strong>, coherente con una estrategia de marca + conducción a sitio.`});
+  document.getElementById('findings').innerHTML=F.map(f=>`<div class="finding ${f.t}"><span class="f-label">${f.l}</span><div>${f.h}</div></div>`).join('');
 
-  // chart (active campaign chronological)
-  const c = [...active.rows].sort((a,b)=> a.date<b.date?-1:1);
-  new Chart(document.getElementById('trend'),{
-    data:{
-      labels:c.map(r=>dmm(r.date)),
-      datasets:[
-        {type:'bar',label:'Impresiones',data:c.map(r=>r.impressions),backgroundColor:'#003D91',yAxisID:'y',order:2,borderRadius:4},
-        {type:'line',label:'Spend ($)',data:c.map(r=>r.spend),borderColor:'#DA291C',backgroundColor:'#DA291C',yAxisID:'y1',order:1,tension:.3,pointRadius:3,borderWidth:2}
-      ]
-    },
-    options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
-      plugins:{legend:{position:'top'}},
-      scales:{
-        y:{position:'left',title:{display:true,text:'Impresiones'},ticks:{callback:v=>fmt(v)}},
-        y1:{position:'right',title:{display:true,text:'Spend ($)'},grid:{drawOnChartArea:false}}
-      }}
-  });
+  // Summary table by campaign
+  const byCamp={};rows.forEach(r=>{(byCamp[r.campaign]??=[]).push(r);});
+  const camps=Object.entries(byCamp).map(([name,rs])=>{
+    const ds=rs.map(r=>r.date).sort();return{name,rs,start:ds[0],end:ds[ds.length-1],a:agg(rs)};
+  }).sort((x,y)=>y.a.spend-x.a.spend);
+  document.querySelector('#summaryTable tbody').innerHTML=camps.map(c=>{
+    const active=c.end>=addDays(dTo,-2);
+    return `<tr>
+      <td style="max-width:240px">${c.name.trim()}</td>
+      <td>${productOf(c.name)}</td>
+      <td>${objName(c.rs[0])}</td>
+      <td><span class="status ${active?'active':'ended'}"><span class="dot"></span>${active?'Activa':'Finalizada'}</span></td>
+      <td>${dmm(c.start)}–${dmm(c.end)}</td>
+      <td class="num">${fmt(c.a.spend)}</td>
+      <td class="num">${fmt(c.a.impressions)}</td>
+      <td class="num">${fmt(c.a.reach)}</td>
+      <td class="num">${fmt(c.a.clicks)}</td>
+      <td class="num">${cop(c.a.cpm)}</td>
+      <td class="num">${dec(c.a.ctr,2)}%</td></tr>`;
+  }).join('');
 });
-
 function addDays(s,n){const d=new Date(s+'T00:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
 </script>
-</body>
-</html>
+</body></html>
