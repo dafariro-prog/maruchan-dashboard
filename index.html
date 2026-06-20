@@ -91,6 +91,16 @@ table.summary-table th{text-align:left;padding:10px 8px;font-weight:600;font-siz
 table.summary-table td{padding:10px 8px;border-bottom:1px solid var(--border)}
 table.summary-table tr:last-child td{border-bottom:none}
 .num{text-align:right;font-variant-numeric:tabular-nums}
+.camp-cell{max-width:230px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ad-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}
+.ad-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.ad-card .ad-thumb{width:100%;aspect-ratio:1/1;object-fit:cover;background:#EEF2F7;display:block}
+.ad-card .ad-body{padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.ad-card .ad-name{font-size:12px;font-weight:600;color:var(--text);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:32px}
+.ad-card .ad-prod{font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--blue-dark);background:#E3F1FA;padding:2px 7px;border-radius:5px;align-self:flex-start}
+.ad-card .ad-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;border-top:1px solid var(--border);padding-top:8px}
+.ad-card .ad-stat .s-l{font-size:9.5px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.3px;font-weight:600}
+.ad-card .ad-stat .s-v{font-size:13px;font-weight:700;color:var(--text)}
 footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:11px;text-align:center}
 footer .src{margin-top:6px;opacity:.85}
 </style></head><body>
@@ -149,6 +159,11 @@ footer .src{margin-top:6px;opacity:.85}
       <p id="analysisIntro" style="font-size:13px;color:var(--text-muted);margin-bottom:14px;max-width:960px"></p>
       <div class="findings" id="findings"></div>
     </div>
+  </section>
+
+  <section id="creativosSection" style="display:none">
+    <h2 class="section-title">Top creativos por inversión</h2>
+    <div class="ad-grid" id="adGrid"></div>
   </section>
 
   <section>
@@ -309,6 +324,28 @@ fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()).then(data=>{
   F.push({t:'info',l:'Mezcla de objetivos',h:`La inversión se divide <strong>${dec(AW.spend/T.spend*100,0)}% Awareness / ${dec(TR.spend/T.spend*100,0)}% Traffic</strong>, coherente con una estrategia de marca + conducción a sitio.`});
   document.getElementById('findings').innerHTML=F.map(f=>`<div class="finding ${f.t}"><span class="f-label">${f.l}</span><div>${f.h}</div></div>`).join('');
 
+  // Top creativos (thumbnails)
+  if (Array.isArray(data.ads) && data.ads.length){
+    document.getElementById('creativosSection').style.display='';
+    document.getElementById('adGrid').innerHTML=data.ads.map(a=>{
+      const ctr=a.impressions?a.clicks/a.impressions*100:0;
+      const name=(a.ad_name||'').trim()||'(sin nombre)';
+      return `<div class="ad-card">
+        <img class="ad-thumb" loading="lazy" src="${a.thumbnail}" alt="${name}"
+             onerror="this.style.display='none'">
+        <div class="ad-body">
+          <span class="ad-prod">${productOf(a.campaign)}</span>
+          <div class="ad-name" title="${name}">${name}</div>
+          <div class="ad-stats">
+            <div class="ad-stat"><div class="s-l">Inversión</div><div class="s-v">${copShort(a.spend)}</div></div>
+            <div class="ad-stat"><div class="s-l">Impresiones</div><div class="s-v">${fmt(a.impressions)}</div></div>
+            <div class="ad-stat"><div class="s-l">Link clicks</div><div class="s-v">${fmt(a.link_clicks||a.clicks)}</div></div>
+            <div class="ad-stat"><div class="s-l">CTR</div><div class="s-v">${dec(ctr,2)}%</div></div>
+          </div>
+        </div></div>`;
+    }).join('');
+  }
+
   // Summary table by campaign
   const byCamp={};rows.forEach(r=>{(byCamp[r.campaign]??=[]).push(r);});
   const camps=Object.entries(byCamp).map(([name,rs])=>{
@@ -317,7 +354,7 @@ fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()).then(data=>{
   document.querySelector('#summaryTable tbody').innerHTML=camps.map(c=>{
     const active=c.end>=addDays(dTo,-2);
     return `<tr>
-      <td style="max-width:240px">${c.name.trim()}</td>
+      <td><div class="camp-cell" title="${c.name.trim()}">${c.name.trim()}</div></td>
       <td>${productOf(c.name)}</td>
       <td>${objName(c.rs[0])}</td>
       <td><span class="status ${active?'active':'ended'}"><span class="dot"></span>${active?'Activa':'Finalizada'}</span></td>

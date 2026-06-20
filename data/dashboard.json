@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-20T14:17:28.412Z",
+  "updated": "2026-06-20T14:28:27.798Z",
   "account": {
     "id": "1211531357024604",
     "name": "Axon Pharma Colombia",
@@ -4753,6 +4753,128 @@
       "cpc": 58.4984,
       "cpm": 2807.7288,
       "ctr": 0.048
+    }
+  ],
+  "ads": [
+    {
+      "ad_name": "Mar2026_CO_AxonPharma_MARIMER_BABY_NACIONAL_Farmatodo_Traffic_08-31May_BM10",
+      "campaign": "May26_CO_AxonPharma_MARIMER_FB/IG_Traffic",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/201191158966910232?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIR2DUgxKVHEtEgCK8u7mmjqXJpv0bvlIfjG6D67GbgtjffI0jBu8a8jqcCerXMcyYwjwupX3PtWmFlms_dQv7y6RO5Yxuog6evVCLyqwp6320G5VQgQshQdec1VbB1EQipBUxS9jMw5uDn6nu9E-G0&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=rRJdxH_I9tJuA36CT7egJQ&_nc_eui2=AeEXFm57NU_Bz_sygboMwzU67nkqeR_KSLjueSp5H8pIuJEhMN2xj4DuawdQB2695u8_QaCaTVt2vGkCKmvTb4pu&_nc_oc=Adpr1daztd1jWCR6SDtqL-x-PDlcBqnsDu9mfuCSyy-qmjfwCAJa4Y0s_eCz6TV9Ub0&ccb=13-1&oh=06_Q3_AAQKrdsvc28YvQ6ryhvGcISS53QBx8HHUg4xhY6Njk3yc&oe=6A38809E&_nc_sid=58080a",
+      "spend": 2207388,
+      "impressions": 1157569,
+      "reach": 573676,
+      "clicks": 35483,
+      "link_clicks": 32637
+    },
+    {
+      "ad_name": "Abr26_CO_AxonPharma_MARIMER_ADULTO_BOGOTA_CruzVerde_Awareness_10-30Abr_AM3",
+      "campaign": "Abr26_CO_AxonPharma_MARIMER_FB/IG_Awareness",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/3681118083139916099?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQJOsQ2TZDNbH3gToV1683BNcT-IwbJSuPgGrIqj2H2sptd8f6kVPugZiITkzZnWaembPZUQPb_LT3EBtV01eVCWo9D2YLptyNOIeLtBpUsvUQvRP1qehGmlmevZgxdCANGbmPpoJr0EH2iUOFL3xkPa&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=zJquLbWyk21e9mzQyHpl7A&_nc_eui2=AeFOY_GX98lQ-jV-4Y2NhkzDTI-NcjB_Fp1Mj41yMH8WnVPqppHJD3r2DuLs2S9b_vVNBEXJij0TzRBLlmfSpkhC&_nc_oc=AdojBLOhDN6Lh7tywV101BlkENE1dNr1_UJWKpxRwJLIl6l9A9l0ma9i_Ox1mWrzM9k&ccb=13-1&oh=06_Q3_AAaKAzGmsGW0HQoItz-mWWqQQL0MsLS3AgisHehqSncxw&oe=6A387D89&_nc_sid=58080a",
+      "spend": 1652026,
+      "impressions": 2040173,
+      "reach": 926322,
+      "clicks": 8037,
+      "link_clicks": 4231
+    },
+    {
+      "ad_name": "Jun26_CO_AxonPharma_FLORATIL_ADULTO_ANTIOQUIA_Unidrogas_Awareness_01-30Jun_Post1",
+      "campaign": "Jun26_CO_AxonPharma_FLORATIL_FB/IG_Awareness",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/7462970606536245254?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQJst2G-DvXTwzQuiEBywfIH5SbdukZhwKUAQj9Z8kawTLawch_7Nlaw3j1wVOTLwk4pKug1vkY4yVAgN3n4o9B4sEOZWYxh5oSkAgVWflRnUqktZohsrpbBy2a1kIuLBJOJEj549mNfTXzxCg98v8Gm&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=CzRDmS3aP0z1X-Ev6EUuvg&_nc_eui2=AeGcqwU7SLJZEUoxLrgmyuaDp9TieZZceKOn1OJ5llx4oyN6sQCtMh1YdaWIX4mnCZ_diYMZmfkubc7ruzOjBS8P&_nc_oc=AdoTuj7uNW3WbIKhNAXHuxU1eqkwXBFqyf0gsK-jw5dVKWT2BsUW7x1iMvzun8G0LXI&ccb=13-1&oh=06_Q3_AAeHCWnaTbC5XN1Dt6IRF5ydBlA-CzlWgi-0B3KQVFut_&oe=6A389358&_nc_sid=58080a",
+      "spend": 1631210,
+      "impressions": 1931431,
+      "reach": 891929,
+      "clicks": 5032,
+      "link_clicks": 2620
+    },
+    {
+      "ad_name": "May26_CO_AxonPharma_MARIMER_BABY_BOGOTA_CruzVerde_Awareness_08-30May_Post1",
+      "campaign": "May26_CO_AxonPharma_MARIMER_FB/IG_Awareness",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/3759485693518620431?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQL41c7yxP2DN9CoQVS__8bV9QyDtNIfX6Zgs15o3LMrHMTkhlG3vT1CvmuEJp1_G7zyWJ_KoGQ8Gyj40eIJwOnNpzMNe3-d88ufwYYxMmHS4r_A5I0os0A6KECKqAQEhRGPV1oKL9dWDso4ORBRSZNm&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=6euYTS1AgRdrsC24iCxq9w&_nc_eui2=AeFBpxouIDR5TlKsdqbS_SyExPmWnJwHDHbE-ZacnAcMdivXZXoLkgmjp9MsIMnaRuFQ_vve68PeGhOvJI5vbcdX&_nc_oc=AdpvUpydjxBqbV2HkSRc3CgFVWv5lHeXigWLsYhUP2r2vOT6rfxLKJBxDf00tc5HIzY&ccb=13-1&oh=06_Q3_AAWZaNwH2W9GT2sUJ8ogo42Jm5gt3ag7hbDquvZ4x6weP&oe=6A3866DA&_nc_sid=58080a",
+      "spend": 1452693,
+      "impressions": 588193,
+      "reach": 136694,
+      "clicks": 3055,
+      "link_clicks": 1692
+    },
+    {
+      "ad_name": "Mar2026_CO_AxonPharma_Marimer_ELTIEMPO_Awareness_10-31Mar",
+      "campaign": "Mar26_CO_AxonPharma_MARIMER&FLORATIL_EL TIEMPO_FB/IG_Awareness",
+      "thumbnail": "https://scontent-fra5-1.xx.fbcdn.net/v/t15.5256-10/581835118_737904322651938_4892307920591534816_n.jpg?_nc_cat=100&ccb=1-7&_nc_eui2=AeEBEaV_T9pATP4waF2r_rZs8FnpeDFpZE3wWel4MWlkTcCU-k2xzcx0RNEEY7IQKSk92uPPNqQO1vQYLS8xlov1&_nc_ohc=IGDlqqD-1wgQ7kNvwGJwoqO&_nc_oc=AdrDiUv4xKgLh3GFPOzEIKGrYeSYu26Z7hfH8OZfDV4d1CMMS3z1w7YyLLIPQotm24Q&_nc_zt=23&_nc_ht=scontent-fra5-1.xx&edm=AEuWsiQEAAAA&_nc_gid=Ds3OOOpltJmvdMT2nTSOlw&_nc_tpa=Q5bMBQHM2GsE3gZUmM8qLjTGLCdJ5qjLRHOClxFFQ2lAnaz6FNZRnTnZ_i4amRyLiK7QDGlKsAVLuAVbXg&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&ur=a7ce7f&_nc_sid=58080a&oh=00_Af8pmXqYoQw7OqgGi8xPIXRFhvGh3te_ZcEf0JRM9uNGJA&oe=6A3C6918",
+      "spend": 1451479,
+      "impressions": 693950,
+      "reach": 501852,
+      "clicks": 8156,
+      "link_clicks": 94
+    },
+    {
+      "ad_name": "May2026_CO_AxonPharma_MARIMER_ADULTOS_BOGOTA_Traffic_08-31May_Post2",
+      "campaign": "May26_CO_AxonPharma_MARIMER_FB/IG_Traffic",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/947797549625757731?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQJbJ--32wOhj7VJ3Nwo9sEHw8ceUz_gqoOFB3qGsHIXMvLf2n3txZwAa3EXCxjQAWY4GA7YSbYvxvNkXFt41-ZFwPKnuknSWPGHMUgotwSAku8UE2a2qqoURntzDZT_6mHi2agRUzoVj2qOZwLXcW8e&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=-kvHC_0HaiCi3sUD2w7Evw&_nc_eui2=AeHDuTf9mXuFQTfHKatygjTcY3rSJbWaKQNjetIltZopA2KtiRltAdk9NOIm4DtFrdw0BvPNoKpmfmqYVlWmE3k1&_nc_oc=Ado3vTV9P7S_EAYZkI2u_BMJCv_APEw8BoUmLWRAJmpBF7X9FIBKfZGsb18YaAivx40&ccb=13-1&oh=06_Q3_AAQsNlnkLVXxllhEVdu9zhnuaery6c2VXMyv4zv2FRDsd&oe=6A386E99&_nc_sid=58080a",
+      "spend": 1441645,
+      "impressions": 649356,
+      "reach": 369292,
+      "clicks": 21833,
+      "link_clicks": 19852
+    },
+    {
+      "ad_name": "Jun26_CO_AxonPharma_FLORATIL_BABY_ATLANTICO_Unidrogas_Awareness_01-30Jun_Post2",
+      "campaign": "Jun26_CO_AxonPharma_FLORATIL_FB/IG_Awareness",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/8423284035436228353?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQJiucaNXggAcvqq8me0erJbG0URj-hTVBj6zuR9wtWKo62m2-Ng7QD4RASUHvhcSq4c2NfFpiJZB2UwG-p0gKFel9-eI5HhmXReCpq7ZEdsuAl7rbxyqDUgjbAZtn1iTx2p9XppMJZob4r_08RajkgF&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=LuYY5yUsIsMnYWkilj6l5A&_nc_eui2=AeGJXDnJ9l2dxbAhC8zw6slMsUkUC5FsKOuxSRQLkWwo6xicD4TZg4hmKFuOUGhdqfsWUOMpYwer-RLs8hAPgIpc&_nc_oc=AdoDJUkGp6v7RzvutuwgT8q2JMnu-Smjm1OwUDkEXCJKpcV9raGFsT5DAFMQQKd9ZRk&ccb=13-1&oh=06_Q3_AAQ58YcnE1_2mb8GIJyFrb1dSUV2XCQqvoyG3FBezKPyK&oe=6A3886D2&_nc_sid=58080a",
+      "spend": 1410697,
+      "impressions": 1707787,
+      "reach": 626698,
+      "clicks": 5423,
+      "link_clicks": 3314
+    },
+    {
+      "ad_name": "Jun26_CO_AxonPharma_FLORATIL_ADULTO_ATLANTICO_Unidrogas_Awareness_01-30Jun_Post2",
+      "campaign": "Jun26_CO_AxonPharma_FLORATIL_FB/IG_Awareness",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/3364200069626387320?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIsSJVSkSnWD0nfCQfAkP9HUd2tfShoEskoIuaAeY0yesq8UBRKEqc8IE_Y-NYzeOm1FR762RKW4m8c7ZeMR7b1z4IAtbjuertAzvPPxK86GDZpIkpx86uCeBpLeVvX9KUgA-_VVFrETuq_njDyauL5&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=t0JlvimteP02B0pGLud9cQ&_nc_eui2=AeHkuh0_bSj81McNOc1LOgqTpWPNXuNvsi6lY81e42-yLpZPiXm-KsgwB49mzyNPsv68bAgj9vCfzYOI9Yzg83ZG&_nc_oc=Adrg9yx82M7MDsABN5QBR_aEBrfttHCr5197aAvRVT7l-25TNCcvHG5Z7pYsWrphSVo&ccb=13-1&oh=06_Q3_AAX2bj71Z8ijQVDeL2bO4ZOkgM7eSFov_7KetFKiWNmC_&oe=6A387279&_nc_sid=58080a",
+      "spend": 1408991,
+      "impressions": 1686888,
+      "reach": 647225,
+      "clicks": 4966,
+      "link_clicks": 2497
+    },
+    {
+      "ad_name": "May2026_CO_AxonPharma_A-CERUMEN_ADULTO_BOGOTA_CruzVerde_Traffic_08-31May_HM6",
+      "campaign": "May26_CO_AxonPharma_A-CERUMEN_FB/IG_Traffic",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/17336187916681756806?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQJDXzhioo2OFK9cPj6y23JqXRPfPICx5YQDdBqB5CrD29VWb_KWxXouth5IHkotxx6qkvVJXc1b8bBdRf9MGheYkWnOIICdaOj1w-QoC8k_98890qvx_Rd7CPlZDSEJ19YPRR-cyaHhh9bjMMDt5aj0&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=UZunePUoFfOOA7yRSG9nTg&_nc_eui2=AeEnf8STFCFMb0SiuETp9r6mW7jWmtsDE0ZbuNaa2wMTRvTtc_Qv4EPBDGUGbvTXoxotpZRaf-mk_5ZlYNcCMVt1&_nc_oc=AdpKRynXGJ70ZjA5wSG7N_Q90Wkv6NImfByD158yLWFKsj1Zqm4nsN9wU9EDsgytH2g&ccb=13-1&oh=06_Q3_AAcfUtZ2xF9EAMYuHE7XrrrNLtWY9auszlzi8u2YONDJj&oe=6A3887CA&_nc_sid=58080a",
+      "spend": 1378876,
+      "impressions": 444816,
+      "reach": 201643,
+      "clicks": 24177,
+      "link_clicks": 22195
+    },
+    {
+      "ad_name": "Jun26_CO_AxonPharma_FLORATIL_BABY_BOGOTA_CruzVerde_Awareness_01-30Jun_Post3",
+      "campaign": "Jun26_CO_AxonPharma_FLORATIL_FB/IG_Awareness",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/16504173962542352125?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQIPpvTX9xe798Xm5GcvouxPDVOxFx-qZUEUnt8Q1DbYWoL8yI5y-rJ7e5twRyxCYEx7WFS4B-7DRQlvVrqfLFl1WwlJNbTWkIAAAhY7NjlBtucd3GVR_2K8Gb9PcLYKEWiqFWeahGyCPbudKnjDCqEb&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=ypjz4uQijjCwePhLPLikQg&_nc_eui2=AeEfPg7khZrh0oCHudlnVtIWAczAl1zbBzIBzMCXXNsHMiolfstYZiB4uzyqHPUOsNOXAMpZxNd9sGC4j4qj-zaj&_nc_oc=Adp0Z3Uvp__nDq-STNkoUIVRBFFdYeIIGKi2NKiF2iYY1SSKpnp246mv1noS1IQA7HE&ccb=13-1&oh=06_Q3_AAYLc0-VV0j2xgrxJHC-SYBaK-slKlw0EA1zcy3Y6VbWz&oe=6A387E8C&_nc_sid=58080a",
+      "spend": 1370699,
+      "impressions": 383026,
+      "reach": 104019,
+      "clicks": 1871,
+      "link_clicks": 1295
+    },
+    {
+      "ad_name": "Jun26_CO_AxonPharma_FLORATIL_ADULTO_BOGOTA_CruzVerde_Awareness_01-30Jun_Post1",
+      "campaign": "Jun26_CO_AxonPharma_FLORATIL_FB/IG_Awareness",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/14551285304354233878?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQKo8qmG1flGbF-XMh2g6Tc_VeuoebleOW_Kz1hN4ycHnym7RSdkhqSXQTKifjkg-bMxiXMYVqlzz9A5T35dOtXyjdEy9APsTn11xSB2bUNENpiCTyHjs9uwpUDkVUEJKggezvKyJOs3VqEsFhURm3Sh&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=pANIcLv-0oY4f_iCk5gKsg&_nc_eui2=AeGuBNLs9Hih-JlahyogD20Hp9EB8a5SWTen0QHxrlJZNwbuIUmBlHPqcib7ZK52kN_mdIh_Rea27fZlAJammT1C&_nc_oc=AdpAvyK5LQgDfaiAiDCsCy_SaNNOyrryQT7wrG5lcnsHDtLqqoSylGIee1QFMOG6DMY&ccb=13-1&oh=06_Q3_AAQoY2M-8lMTk9wZSuwDzzoRc82K45XEo8rkZdim8-oof&oe=6A387B6F&_nc_sid=58080a",
+      "spend": 1358564,
+      "impressions": 1793124,
+      "reach": 884475,
+      "clicks": 6603,
+      "link_clicks": 3743
+    },
+    {
+      "ad_name": "Abr2026_CO_AxonPharma_A-CERUMEN_ADULTO_BOGOTA_CruzVerde_Traffic_08-30Abr_HM6",
+      "campaign": "Abr26_CO_AxonPharma_A-CERUMEN_FB/IG_Traffic",
+      "thumbnail": "https://external-fra3-2.xx.fbcdn.net/emg1/v/t13/5859507275453397012?url=https%3A%2F%2Fwww.facebook.com%2Fads%2Fimage%2F%3Fd%3DAQI5WeAUKEi-0adaXVGPopW-dJ-W908Eev725Bt1rZyKByKfQd4f93WJ3NoNDrX3gzs_WtfFSCNNCWiQZvUUMNdtquJxL1q5Ls2PwsIdmr4U0uvjOTUhwwz7a3BLQkNEh_uOY926RACgfL9sX4fwOrNP&fb_obo=1&utld=facebook.com&stp=c0.5000x0.5000f_dst-emg0_p1024x1024_q75_tt6&edm=AEuWsiQEAAAA&_nc_gid=yxaAm5-tOvlacZWOyy1Rbg&_nc_eui2=AeGQabdT26iObRuQM-jjHP9PvVyneQWjgmC9XKd5BaOCYKwSglA94jFuLH3XeRayGZBxR9h93NCyvbgz2WQCYlYM&_nc_oc=AdrN__4pZ20hEwJlbgr3ABopwAf1Fy0Db37A5umJero9u1WMvwWeN4nr3l_92mOll7U&ccb=13-1&oh=06_Q3_AAW8QjpI5LDNLER2qoOTfnXHQxEKcU3C52UnFZ0m6dstM&oe=6A3876F6&_nc_sid=58080a",
+      "spend": 1300978,
+      "impressions": 511764,
+      "reach": 221109,
+      "clicks": 25565,
+      "link_clicks": 22848
     }
   ]
 }
