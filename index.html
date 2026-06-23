@@ -56,10 +56,10 @@ h2.section-title::before{content:"";width:4px;height:18px;background:var(--gray-
 .okr-card .okr-value{font-size:29px;font-weight:700;letter-spacing:-.6px;line-height:1}
 .okr-card .okr-foot{font-size:11.5px;opacity:.88;margin-top:6px}
 .okr-card.highlight .okr-foot{color:var(--text-muted);opacity:1}
-.kpi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-@media (max-width:900px){.kpi-grid{grid-template-columns:1fr}}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
 .kpi-card{background:var(--card);border-radius:12px;padding:20px;box-shadow:var(--shadow);border-top:3px solid var(--blue);position:relative;overflow:hidden}
 .kpi-card.traffic{border-top-color:var(--gray-dark)}
+.kpi-card.repro{border-top-color:var(--blue-light)}
 .kpi-card h3{font-size:13px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.6px;font-weight:600;margin-bottom:6px}
 .kpi-card .kpi-headline{font-size:28px;font-weight:700;color:var(--text);letter-spacing:-.5px}
 .kpi-card .kpi-sub{font-size:12px;color:var(--text-muted);margin-top:4px}
@@ -135,13 +135,14 @@ footer .src{margin-top:6px;opacity:.85}
     <div class="f"><label for="fMonth">Mes</label><select id="fMonth"></select></div>
     <div class="f"><label for="fCamp">Campaña</label><select id="fCamp"></select></div>
     <div class="f"><label for="fStatus">Estado</label><select id="fStatus"></select></div>
+    <div class="f"><label for="fPlat">Plataforma</label><select id="fPlat"></select></div>
     <span class="f-count" id="fCount"></span>
     <button class="f-reset" id="fReset">Limpiar filtros</button>
   </div>
 
   <div class="okr-section">
     <div class="okr-header"><span class="okr-badge">Métrica clave</span><h2>Alcance de marca · Axon Pharma Colombia</h2></div>
-    <div class="okr-sub">Entrega real en Meta (Facebook/Instagram) de los productos A-Cerumen, Marimer y Floratil · moneda COP.</div>
+    <div class="okr-sub">Entrega real en Meta (Facebook/Instagram) y Google Ads (Búsqueda) de los productos A-Cerumen, Marimer y Floratil · moneda COP.</div>
     <div class="okr-grid" id="okrGrid"></div>
   </div>
 
@@ -152,15 +153,15 @@ footer .src{margin-top:6px;opacity:.85}
 
   <section>
     <h2 class="section-title">Evolución diaria de inversión</h2>
-    <div class="chart-card"><h3>Spend diario por objetivo</h3>
-      <div class="chart-sub">Línea azul: Awareness · línea gris: Traffic · valores en COP</div>
+    <div class="chart-card"><h3>Spend diario por plataforma</h3>
+      <div class="chart-sub">Línea azul: Meta · línea gris: Google Ads · valores en COP</div>
       <div class="chart-wrap"><canvas id="spendChart"></canvas></div></div>
   </section>
 
   <section>
     <h2 class="section-title">KPIs diarios</h2>
-    <div class="chart-card"><h3>Impresiones (Awareness) y Link clicks (Traffic)</h3>
-      <div class="chart-sub">Barras: impresiones · línea: link clicks</div>
+    <div class="chart-card"><h3>Impresiones y clics</h3>
+      <div class="chart-sub">Barras: impresiones · línea: clics (todas las plataformas)</div>
       <div class="chart-wrap"><canvas id="kpiChart"></canvas></div></div>
   </section>
 
@@ -186,7 +187,7 @@ footer .src{margin-top:6px;opacity:.85}
     <h2 class="section-title">Tabla resumen consolidada</h2>
     <div class="chart-card" style="overflow-x:auto"><table class="summary-table" id="summaryTable">
       <thead><tr>
-        <th>Campaña</th><th>Producto</th><th>Objetivo</th><th>Estado</th><th>Periodo</th>
+        <th>Campaña</th><th>Plataforma</th><th>Producto</th><th>Objetivo</th><th>Estado</th><th>Periodo</th>
         <th class="num">Spend (COP)</th><th class="num">Impresiones</th><th class="num">Reach</th>
         <th class="num">Clicks</th><th class="num">CPM</th><th class="num">CTR</th>
       </tr></thead><tbody></tbody>
@@ -195,7 +196,7 @@ footer .src{margin-top:6px;opacity:.85}
 
   <footer>
     <div><strong>Informe Axon Pharma Colombia</strong> · <span id="footUpd"></span></div>
-    <div class="src">Fuente: Meta Ads (Facebook/Instagram) · Cuenta <span id="footAcct"></span> · Actualización automática diaria · Solo data real · Moneda COP</div>
+    <div class="src">Fuentes: Meta Ads (Facebook/Instagram) + Google Ads · Cuenta <span id="footAcct"></span> · Solo data real · Moneda COP</div>
   </footer>
 </div>
 
@@ -215,16 +216,17 @@ const MESN={'01':'Enero','02':'Febrero','03':'Marzo','04':'Abril','05':'Mayo','0
 const PRODUCTS=['A-CERUMEN','MARIMER&FLORATIL','MARIMER','FLORATIL'];
 const productOf=c=>{const u=c.toUpperCase();for(const p of PRODUCTS)if(u.includes(p))return p==='MARIMER&FLORATIL'?'MARIMER & FLORATIL':p;return 'Otros';};
 const isTraffic=r=>r.objective==='LINK_CLICKS'||/traffic/i.test(r.campaign);
-const objName=r=>isTraffic(r)?'Traffic':'Awareness';
+const objClass=r=> r.objective==='VIDEO_VIEWS' ? 'Reproducciones' : (isTraffic(r) ? 'Traffic' : 'Awareness');
 const byId=id=>document.getElementById(id);
 
 function agg(rows){
-  const s={spend:0,impressions:0,reach:0,clicks:0,link_clicks:0};
-  rows.forEach(r=>{s.spend+=r.spend;s.impressions+=r.impressions;s.reach+=r.reach;s.clicks+=r.clicks;s.link_clicks+=(r.link_clicks||0);});
+  const s={spend:0,impressions:0,reach:0,clicks:0,link_clicks:0,views:0};
+  rows.forEach(r=>{s.spend+=r.spend;s.impressions+=r.impressions;s.reach+=r.reach;s.clicks+=r.clicks;s.link_clicks+=(r.link_clicks||0);s.views+=(r.views||0);});
   s.cpm=s.impressions?s.spend/s.impressions*1000:0;
   s.cpc=s.link_clicks?s.spend/s.link_clicks:(s.clicks?s.spend/s.clicks:0);
   s.ctr=s.impressions?s.clicks/s.impressions*100:0;
   s.freq=s.reach?s.impressions/s.reach:0;
+  s.cpv=s.views?s.spend/s.views:0;
   return s;
 }
 
@@ -232,8 +234,11 @@ let chSpend, chKpi;
 const BLUE='#0095D5',GRAY='#56606A';
 Chart.defaults.font.family="-apple-system,'Segoe UI',Roboto,sans-serif";Chart.defaults.color='#5A6271';Chart.defaults.font.size=12;
 
-fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()).then(data=>{
-  const ALL=data.rows;
+Promise.all([
+  fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()),
+  fetch('data/google_ads.json?_='+Date.now()).then(r=>r.ok?r.json():{rows:[]}).catch(()=>({rows:[]}))
+]).then(([data, ga])=>{
+  const ALL=[...(data.rows||[]).map(r=>({...r,source:'Meta'})), ...(ga.rows||[]).map(r=>({...r,source:'Google Ads'}))];
   const gMax=ALL.map(r=>r.date).sort().at(-1);
   const gMin=ALL.map(r=>r.date).sort()[0];
   const campEnd={}; ALL.forEach(r=>{ if(!campEnd[r.campaign]||r.date>campEnd[r.campaign]) campEnd[r.campaign]=r.date; });
@@ -252,25 +257,28 @@ fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()).then(data=>{
     <div class="label" style="font-size:12px">Histórico desde ${dmy(gMin)}</div>`;
 
   // ---- Poblar filtros ----
-  const fy=byId('fYear'),fm=byId('fMonth'),fc=byId('fCamp'),fs=byId('fStatus'),fr=byId('fReset');
+  const fy=byId('fYear'),fm=byId('fMonth'),fc=byId('fCamp'),fs=byId('fStatus'),fp=byId('fPlat'),fr=byId('fReset');
   const years=[...new Set(ALL.map(r=>r.date.slice(0,4)))].sort();
   fy.innerHTML='<option value="all">Todos</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
   fm.innerHTML='<option value="all">Todos</option>'+Object.keys(MESN).map(m=>`<option value="${m}">${MESN[m]}</option>`).join('');
   const camps=[...new Set(ALL.map(r=>r.campaign.trim()))].sort();
   fc.innerHTML='<option value="all">Todas</option>'+camps.map(c=>`<option value="${c}">${c}</option>`).join('');
   fs.innerHTML='<option value="all">Todos</option><option value="Activa">Activa</option><option value="Finalizada">Finalizada</option>';
+  const plats=[...new Set(ALL.map(r=>r.source))].sort();
+  fp.innerHTML='<option value="all">Todas</option>'+plats.map(p=>`<option value="${p}">${p}</option>`).join('');
 
   function applyFilters(){
-    const y=fy.value,m=fm.value,c=fc.value,st=fs.value;
+    const y=fy.value,m=fm.value,c=fc.value,st=fs.value,p=fp.value;
     const rows=ALL.filter(r=>
       (y==='all'||r.date.slice(0,4)===y) &&
       (m==='all'||r.date.slice(5,7)===m) &&
       (c==='all'||r.campaign.trim()===c) &&
-      (st==='all'||statusOf(r.campaign)===st));
+      (st==='all'||statusOf(r.campaign)===st) &&
+      (p==='all'||r.source===p));
     render(rows);
   }
-  [fy,fm,fc,fs].forEach(el=>el.addEventListener('change',applyFilters));
-  fr.addEventListener('click',()=>{fy.value='all';fm.value='all';fc.value='all';fs.value='all';applyFilters();});
+  [fy,fm,fc,fs,fp].forEach(el=>el.addEventListener('change',applyFilters));
+  fr.addEventListener('click',()=>{fy.value='all';fm.value='all';fc.value='all';fs.value='all';fp.value='all';applyFilters();});
 
   renderAds(data.ads||[]);
   render(ALL);
@@ -283,7 +291,7 @@ fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()).then(data=>{
       byId('subhead').textContent='Colombia · Meta (Facebook / Instagram) · sin datos para el filtro';
       ['headerMeta','okrGrid','kpiGrid','prodGrid','recoList'].forEach(id=>byId(id).innerHTML='');
       byId('analysisIntro').textContent='';
-      document.querySelector('#summaryTable tbody').innerHTML='<tr><td colspan="11" style="text-align:center;color:var(--text-muted);padding:24px">Sin datos para los filtros seleccionados.</td></tr>';
+      document.querySelector('#summaryTable tbody').innerHTML='<tr><td colspan="12" style="text-align:center;color:var(--text-muted);padding:24px">Sin datos para los filtros seleccionados.</td></tr>';
       if(chSpend){chSpend.destroy();chSpend=null;} if(chKpi){chKpi.destroy();chKpi=null;}
       return;
     }
@@ -303,35 +311,42 @@ fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()).then(data=>{
       <div class="okr-card"><div class="okr-label">Reach (suma diaria)</div><div class="okr-value">${copShort(T.reach).replace('$','')}</div><div class="okr-foot">Frecuencia media ${dec(T.freq,2)}</div></div>
       <div class="okr-card"><div class="okr-label">Inversión total</div><div class="okr-value">${copShort(T.spend)}</div><div class="okr-foot">CPM promedio ${cop(T.cpm)}</div></div>`;
 
-    const AW=agg(rows.filter(r=>!isTraffic(r))), TR=agg(rows.filter(isTraffic));
-    byId('kpiGrid').innerHTML=`
-      <div class="kpi-card">
+    const CLASSES=['Awareness','Traffic','Reproducciones'];
+    const present=CLASSES.filter(cl=>rows.some(r=>objClass(r)===cl));
+    byId('kpiGrid').innerHTML=present.map(cl=>{
+      const a=agg(rows.filter(r=>objClass(r)===cl));
+      if(cl==='Awareness') return `<div class="kpi-card">
         <h3>Awareness · Alcance</h3>
-        <div class="kpi-headline">${fmt(AW.impressions)}</div>
-        <div class="kpi-sub">impresiones · reach ${fmt(AW.reach)} · frecuencia ${dec(AW.freq,2)}</div>
-        <div class="kpi-row"><span class="kpi-row-label">Inversión</span><span class="kpi-row-val">${cop(AW.spend)}</span></div>
-        <div class="kpi-row"><span class="kpi-row-label">CPM</span><span class="kpi-row-val">${cop(AW.cpm)}</span></div>
-      </div>
-      <div class="kpi-card traffic">
-        <h3>Traffic · Link clicks</h3>
-        <div class="kpi-headline">${fmt(TR.link_clicks||TR.clicks)}</div>
-        <div class="kpi-sub">link clicks · CTR ${dec(TR.ctr,2)}% · impresiones ${fmt(TR.impressions)}</div>
-        <div class="kpi-row"><span class="kpi-row-label">Inversión</span><span class="kpi-row-val">${cop(TR.spend)}</span></div>
-        <div class="kpi-row"><span class="kpi-row-label">CPC (link)</span><span class="kpi-row-val">${cop(TR.cpc)}</span></div>
-      </div>`;
+        <div class="kpi-headline">${fmt(a.impressions)}</div>
+        <div class="kpi-sub">impresiones · reach ${fmt(a.reach)} · frecuencia ${dec(a.freq,2)}</div>
+        <div class="kpi-row"><span class="kpi-row-label">Inversión</span><span class="kpi-row-val">${cop(a.spend)}</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">CPM</span><span class="kpi-row-val">${cop(a.cpm)}</span></div></div>`;
+      if(cl==='Traffic') return `<div class="kpi-card traffic">
+        <h3>Traffic · Clics</h3>
+        <div class="kpi-headline">${fmt(a.link_clicks||a.clicks)}</div>
+        <div class="kpi-sub">clics · CTR ${dec(a.ctr,2)}% · impresiones ${fmt(a.impressions)}</div>
+        <div class="kpi-row"><span class="kpi-row-label">Inversión</span><span class="kpi-row-val">${cop(a.spend)}</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">CPC</span><span class="kpi-row-val">${cop(a.cpc)}</span></div></div>`;
+      return `<div class="kpi-card repro">
+        <h3>Reproducciones · Video</h3>
+        <div class="kpi-headline">${fmt(a.views)}</div>
+        <div class="kpi-sub">views · impresiones ${fmt(a.impressions)}</div>
+        <div class="kpi-row"><span class="kpi-row-label">Inversión</span><span class="kpi-row-val">${cop(a.spend)}</span></div>
+        <div class="kpi-row"><span class="kpi-row-label">CPV</span><span class="kpi-row-val">${cop(a.cpv)}</span></div></div>`;
+    }).join('');
 
     // Series diarias
     const days=[...new Set(rows.map(r=>r.date))].sort();
-    const spA=days.map(d=>rows.filter(r=>r.date===d&&!isTraffic(r)).reduce((a,r)=>a+r.spend,0));
-    const spT=days.map(d=>rows.filter(r=>r.date===d&&isTraffic(r)).reduce((a,r)=>a+r.spend,0));
-    const impA=days.map(d=>rows.filter(r=>r.date===d&&!isTraffic(r)).reduce((a,r)=>a+r.impressions,0));
-    const clkT=days.map(d=>rows.filter(r=>r.date===d&&isTraffic(r)).reduce((a,r)=>a+(r.link_clicks||r.clicks),0));
+    const spMeta=days.map(d=>rows.filter(r=>r.date===d&&r.source==='Meta').reduce((a,r)=>a+r.spend,0));
+    const spGA=days.map(d=>rows.filter(r=>r.date===d&&r.source==='Google Ads').reduce((a,r)=>a+r.spend,0));
+    const impAll=days.map(d=>rows.filter(r=>r.date===d).reduce((a,r)=>a+r.impressions,0));
+    const clkAll=days.map(d=>rows.filter(r=>r.date===d).reduce((a,r)=>a+(r.link_clicks||r.clicks),0));
     const LBL=days.map(dmy);
 
     if(chSpend)chSpend.destroy();
     chSpend=new Chart(byId('spendChart'),{type:'line',data:{labels:LBL,datasets:[
-      {label:'Awareness',data:spA,borderColor:BLUE,backgroundColor:BLUE+'22',fill:true,tension:.35,borderWidth:2.5,pointRadius:0},
-      {label:'Traffic',data:spT,borderColor:GRAY,backgroundColor:GRAY+'1A',fill:true,tension:.35,borderWidth:2.5,pointRadius:0}
+      {label:'Meta',data:spMeta,borderColor:BLUE,backgroundColor:BLUE+'22',fill:true,tension:.35,borderWidth:2.5,pointRadius:0},
+      {label:'Google Ads',data:spGA,borderColor:GRAY,backgroundColor:GRAY+'1A',fill:true,tension:.35,borderWidth:2.5,pointRadius:0}
     ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',padding:12}},
         tooltip:{callbacks:{label:c=>c.dataset.label+': '+cop(c.parsed.y)}}},
@@ -339,14 +354,14 @@ fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()).then(data=>{
 
     if(chKpi)chKpi.destroy();
     chKpi=new Chart(byId('kpiChart'),{data:{labels:LBL,datasets:[
-      {type:'bar',label:'Impresiones (Awareness)',data:impA,backgroundColor:BLUE,borderRadius:3,yAxisID:'y'},
-      {type:'line',label:'Link clicks (Traffic)',data:clkT,borderColor:GRAY,backgroundColor:GRAY+'22',tension:.35,borderWidth:2.5,pointRadius:0,yAxisID:'y1'}
+      {type:'bar',label:'Impresiones',data:impAll,backgroundColor:BLUE,borderRadius:3,yAxisID:'y'},
+      {type:'line',label:'Clics',data:clkAll,borderColor:GRAY,backgroundColor:GRAY+'22',tension:.35,borderWidth:2.5,pointRadius:0,yAxisID:'y1'}
     ]},options:{responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
       plugins:{legend:{position:'bottom',labels:{usePointStyle:true,pointStyle:'circle',padding:12}},
         tooltip:{callbacks:{label:c=>c.dataset.label+': '+fmt(c.parsed.y)}}},
       scales:{x:{grid:{display:false}},
         y:{beginAtZero:true,position:'left',grid:{color:'#EBF0F7'},ticks:{callback:v=>(v/1e6).toFixed(1)+'M'},title:{display:true,text:'Impresiones'}},
-        y1:{beginAtZero:true,position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>fmt(v)},title:{display:true,text:'Link clicks'}}}}});
+        y1:{beginAtZero:true,position:'right',grid:{drawOnChartArea:false},ticks:{callback:v=>fmt(v)},title:{display:true,text:'Clics'}}}}});
 
     // Por producto
     const prods=[...new Set(rows.map(r=>productOf(r.campaign)))];
@@ -417,8 +432,9 @@ fetch('data/dashboard.json?_='+Date.now()).then(r=>r.json()).then(data=>{
       const act=statusOf(c.name)==='Activa';
       return `<tr>
         <td><div class="camp-cell" title="${c.name.trim()}">${c.name.trim()}</div></td>
+        <td>${c.rs[0].source||'Meta'}</td>
         <td>${productOf(c.name)}</td>
-        <td>${objName(c.rs[0])}</td>
+        <td>${objClass(c.rs[0])}</td>
         <td><span class="status ${act?'active':'ended'}"><span class="dot"></span>${act?'Activa':'Finalizada'}</span></td>
         <td>${dmy(c.start)}–${dmy(c.end)}</td>
         <td class="num">${fmt(c.a.spend)}</td>
