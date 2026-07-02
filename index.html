@@ -33,9 +33,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica N
 .filters{display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;margin-top:16px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
 .filters .f{display:flex;flex-direction:column;gap:4px}
 .filters label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted)}
-.filters select{font-size:13px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);min-width:120px;cursor:pointer}
-.filters select:focus{outline:2px solid var(--blue);outline-offset:0}
-.filters #fCamp{min-width:240px;max-width:340px}
+.ms{position:relative;min-width:140px}
+.ms-btn{width:100%;font-size:13px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text);cursor:pointer;display:flex;align-items:center;gap:8px}
+.ms-btn .ms-txt{flex:1;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ms-btn::after{content:"▾";color:var(--text-muted);font-size:10px;flex-shrink:0}
+.ms.open .ms-btn{outline:2px solid var(--blue)}
+.ms-panel{position:absolute;top:calc(100% + 4px);left:0;z-index:40;background:#fff;border:1px solid var(--border);border-radius:8px;box-shadow:0 8px 24px rgba(0,74,107,.16);padding:6px;min-width:100%;max-height:300px;overflow:auto;display:none}
+.ms-panel.wide{min-width:340px}
+.ms.open .ms-panel{display:block}
+.ms-opt{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;font-size:12.5px;cursor:pointer;white-space:nowrap}
+.ms-opt:hover{background:#F0F5FA}
+.ms-opt.all{border-bottom:1px solid var(--border);margin-bottom:4px;font-weight:600;color:var(--blue-dark)}
+.ms-opt input{cursor:pointer;margin:0}
+#msCamp{min-width:240px;max-width:300px}
 .filters .f-count{font-size:12px;color:var(--text-muted);padding-bottom:9px;margin-left:auto}
 .filters .f-reset{align-self:flex-end;font-size:12px;font-weight:600;color:var(--blue-dark);background:#E3F1FA;border:none;padding:9px 14px;border-radius:8px;cursor:pointer}
 section{margin-top:32px}
@@ -131,11 +141,11 @@ footer .src{margin-top:6px;opacity:.85}
   <div class="flight-progress" id="flight"></div>
 
   <div class="filters" id="filters">
-    <div class="f"><label for="fYear">Año</label><select id="fYear"></select></div>
-    <div class="f"><label for="fMonth">Mes</label><select id="fMonth"></select></div>
-    <div class="f"><label for="fCamp">Campaña</label><select id="fCamp"></select></div>
-    <div class="f"><label for="fStatus">Estado</label><select id="fStatus"></select></div>
-    <div class="f"><label for="fPlat">Plataforma</label><select id="fPlat"></select></div>
+    <div class="f"><label>Año</label><div class="ms" id="msYear"></div></div>
+    <div class="f"><label>Mes</label><div class="ms" id="msMonth"></div></div>
+    <div class="f"><label>Campaña</label><div class="ms" id="msCamp"></div></div>
+    <div class="f"><label>Estado</label><div class="ms" id="msStatus"></div></div>
+    <div class="f"><label>Plataforma</label><div class="ms" id="msPlat"></div></div>
     <span class="f-count" id="fCount"></span>
     <button class="f-reset" id="fReset">Limpiar filtros</button>
   </div>
@@ -220,6 +230,37 @@ const isTraffic=r=>r.objective==='LINK_CLICKS'||/traffic/i.test(r.campaign);
 const objClass=r=> r.objective==='VIDEO_VIEWS' ? 'Reproducciones' : (isTraffic(r) ? 'Traffic' : 'Awareness');
 const byId=id=>document.getElementById(id);
 
+// Multi-select con checkboxes. Selección vacía = todas. Devuelve {selected(), clear()}.
+function makeMS(container, options, onChange, opts={}){
+  const sel=new Set();
+  const allLabel=opts.allLabel||'Todos';
+  const btn=document.createElement('button'); btn.type='button'; btn.className='ms-btn';
+  btn.innerHTML='<span class="ms-txt"></span>';
+  const txt=btn.querySelector('.ms-txt');
+  const panel=document.createElement('div'); panel.className='ms-panel'+(opts.wide?' wide':'');
+  const all=document.createElement('label'); all.className='ms-opt all';
+  all.innerHTML='<input type="checkbox" checked> <span>'+allLabel+'</span>';
+  panel.appendChild(all);
+  const boxes=[];
+  options.forEach(o=>{
+    const lab=document.createElement('label'); lab.className='ms-opt';
+    const cb=document.createElement('input'); cb.type='checkbox'; cb.value=o.value;
+    const sp=document.createElement('span'); sp.textContent=o.label;
+    lab.appendChild(cb); lab.appendChild(sp); panel.appendChild(lab); boxes.push(cb);
+  });
+  function upd(){
+    txt.textContent = sel.size===0 ? allLabel : (sel.size===1 ? [...sel][0] : sel.size+' seleccionadas');
+    all.querySelector('input').checked = sel.size===0;
+  }
+  all.querySelector('input').addEventListener('change',()=>{ sel.clear(); boxes.forEach(b=>b.checked=false); upd(); onChange(); });
+  boxes.forEach(b=>b.addEventListener('change',()=>{ b.checked?sel.add(b.value):sel.delete(b.value); upd(); onChange(); }));
+  btn.addEventListener('click',e=>{ e.stopPropagation(); document.querySelectorAll('.ms.open').forEach(m=>{if(m!==container)m.classList.remove('open');}); container.classList.toggle('open'); });
+  panel.addEventListener('click',e=>e.stopPropagation());
+  container.appendChild(btn); container.appendChild(panel); upd();
+  return { selected:()=>[...sel], clear:()=>{ sel.clear(); boxes.forEach(b=>b.checked=false); upd(); } };
+}
+document.addEventListener('click',()=>document.querySelectorAll('.ms.open').forEach(m=>m.classList.remove('open')));
+
 function agg(rows){
   const s={spend:0,impressions:0,reach:0,clicks:0,link_clicks:0,views:0};
   rows.forEach(r=>{s.spend+=r.spend;s.impressions+=r.impressions;s.reach+=r.reach;s.clicks+=r.clicks;s.link_clicks+=(r.link_clicks||0);s.views+=(r.views||0);});
@@ -263,31 +304,29 @@ Promise.all([
     <div class="label" style="font-size:12px">Histórico desde ${dmy(gMin)}</div>`;
 
   // ---- Poblar filtros ----
-  const fy=byId('fYear'),fm=byId('fMonth'),fc=byId('fCamp'),fs=byId('fStatus'),fp=byId('fPlat'),fr=byId('fReset');
   const years=[...new Set(ALL.map(r=>r.date.slice(0,4)))].sort();
-  fy.innerHTML='<option value="all">Todos</option>'+years.map(y=>`<option value="${y}">${y}</option>`).join('');
-  fm.innerHTML='<option value="all">Todos</option>'+Object.keys(MESN).map(m=>`<option value="${m}">${MESN[m]}</option>`).join('');
   const camps=[...new Set(ALL.map(r=>r.campaign.trim()))].sort();
-  fc.innerHTML='<option value="all">Todas</option>'+camps.map(c=>`<option value="${c}">${c}</option>`).join('');
-  fs.innerHTML='<option value="all">Todos</option><option value="Activa">Activa</option><option value="Finalizada">Finalizada</option>';
   const plats=[...new Set(ALL.map(r=>r.source))].sort();
-  fp.innerHTML='<option value="all">Todas</option>'+plats.map(p=>`<option value="${p}">${p}</option>`).join('');
+  const msY=makeMS(byId('msYear'), years.map(y=>({value:y,label:y})), applyFilters, {allLabel:'Todos'});
+  const msM=makeMS(byId('msMonth'), Object.keys(MESN).map(m=>({value:m,label:MESN[m]})), applyFilters, {allLabel:'Todos'});
+  const msC=makeMS(byId('msCamp'), camps.map(c=>({value:c,label:c})), applyFilters, {allLabel:'Todas', wide:true});
+  const msS=makeMS(byId('msStatus'), [{value:'Activa',label:'Activa'},{value:'Finalizada',label:'Finalizada'}], applyFilters, {allLabel:'Todos'});
+  const msP=makeMS(byId('msPlat'), plats.map(p=>({value:p,label:p})), applyFilters, {allLabel:'Todas'});
 
   function applyFilters(){
-    const y=fy.value,m=fm.value,c=fc.value,st=fs.value,p=fp.value;
+    const ys=msY.selected(), ms=msM.selected(), cs=msC.selected(), ss=msS.selected(), ps=msP.selected();
     const rows=ALL.filter(r=>
-      (y==='all'||r.date.slice(0,4)===y) &&
-      (m==='all'||r.date.slice(5,7)===m) &&
-      (c==='all'||r.campaign.trim()===c) &&
-      (st==='all'||statusOf(r.campaign)===st) &&
-      (p==='all'||r.source===p));
+      (ys.length===0||ys.includes(r.date.slice(0,4))) &&
+      (ms.length===0||ms.includes(r.date.slice(5,7))) &&
+      (cs.length===0||cs.includes(r.campaign.trim())) &&
+      (ss.length===0||ss.includes(statusOf(r.campaign))) &&
+      (ps.length===0||ps.includes(r.source)));
     render(rows);
   }
-  [fy,fm,fc,fs,fp].forEach(el=>el.addEventListener('change',applyFilters));
-  fr.addEventListener('click',()=>{fy.value='all';fm.value='all';fc.value='all';fs.value='all';fp.value='all';applyFilters();});
+  byId('fReset').addEventListener('click',()=>{msY.clear();msM.clear();msC.clear();msS.clear();msP.clear();applyFilters();});
 
   renderAds(data.ads||[]);
-  render(ALL);
+  applyFilters();
 
   // ---- Render principal (recibe filas filtradas) ----
   function render(rows){
